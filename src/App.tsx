@@ -23,8 +23,8 @@ const App: Component = () => {
 
   const addVote = (id: number) => {
     const idx = suggestions.findIndex((s) => s.id === id);
-    const suggestion = suggestions[idx];
-    setSuggestions( idx, { votes: suggestion.votes++ });
+    setSuggestions([idx], 'votes', s => ++s);
+    console.log(suggestions[0].votes)
   }
 
   return (
