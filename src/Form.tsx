@@ -21,9 +21,27 @@ const Form: Component = () => {
     );
   }
 
+  const removeSuggestion = (id:number, event: MouseEvent) => {
+    event.preventDefault();
+    if(confirm('Are you sure you want to delete this suggestion? This cannot be undone')){
+      const suggestionIdx = suggestions.findIndex(s => s.id === id);
+    setSuggestions(
+      produce((suggestions) => {
+        suggestions.splice(suggestionIdx, 1);
+      }),
+    );
+    }    
+  }
+
   const addVote = (id: number) => {
     const idx = suggestions.findIndex((s) => s.id === id);
     setSuggestions([idx], 'votes', s => ++s);
+    console.log(suggestions[0].votes)
+  }
+
+  const removeVote = (id: number) => {
+    const idx = suggestions.findIndex((s) => s.id === id);
+    setSuggestions([idx], 'votes', s => s > 0 ? --s : 0);
     console.log(suggestions[0].votes)
   }
 
@@ -33,7 +51,7 @@ const Form: Component = () => {
         <ul>
           <For each={suggestions}>{(suggestion) =>
             <li>
-              {suggestion.text} <strong>Votes:</strong> {suggestion.votes} <button onClick={(e) => addVote(suggestion.id)}>Vote</button>
+              {suggestion.text} <strong>Votes:</strong> {suggestion.votes} <button onClick={(e) => addVote(suggestion.id)}>Add Vote</button><button onClick={(e) => removeVote(suggestion.id)}>Remove Vote</button><button onClick={(e) => removeSuggestion(suggestion.id, e)}>Delete Suggestion</button>
             </li>
           }</For>
         </ul>
